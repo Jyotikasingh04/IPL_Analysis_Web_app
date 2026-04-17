@@ -6,7 +6,7 @@ An end-to-end **Data Science + Machine Learning project** that analyzes IPL matc
 
 ## 🚀 Live Demo
 
-🔗 https://your-app-name.streamlit.app
+🔗 https://iplanalysiswebapp-rvxgqefhwr9zckamqcgqff.streamlit.app/
 
 ---
 
