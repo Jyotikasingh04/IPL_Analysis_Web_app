@@ -2,16 +2,20 @@ import streamlit as st
 import joblib
 import requests
 import numpy as np
+import io
 
 st.set_page_config(layout="wide")
 
 st.title("🏆 Win Probability Predictor")
 
-# 🔥 Load model from GitHub
 @st.cache_resource
 def load_model():
     url = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/blob/main/model%20(1).pkl"
-    return joblib.load(requests.get(url, stream=True).raw)
+    
+    response = requests.get(url)
+    bytes_data = io.BytesIO(response.content)
+    
+    return joblib.load(bytes_data)
 
 model = load_model()
 
