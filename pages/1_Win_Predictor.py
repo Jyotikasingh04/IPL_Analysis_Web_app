@@ -8,13 +8,25 @@ st.set_page_config(layout="wide")
 
 st.title("🏆 Win Probability Predictor")
 
+# 🔥 FINAL SAFE MODEL LOADING
 @st.cache_resource
 def load_model():
-    url = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/blob/main/model%20(1).pkl"
+    url = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/score_model_new.1.pkl"
     
     response = requests.get(url)
+
+    # Debug check
+    if response.status_code != 200:
+        st.error("❌ Model download failed")
+        return None
+
+    # Check file size (important)
+    if len(response.content) < 1000000:
+        st.error("❌ Wrong file downloaded (too small)")
+        return None
+
     bytes_data = io.BytesIO(response.content)
-    
+
     return joblib.load(bytes_data)
 
 model = load_model()
@@ -54,14 +66,17 @@ st.markdown("---")
 
 if st.button("🚀 Predict Win Probability"):
 
-    input_data = np.array([[runs_left, balls_left, wickets_left, crr, rrr]])
+    if model is None:
+        st.error("Model not loaded properly")
+    else:
+        input_data = np.array([[runs_left, balls_left, wickets_left, crr, rrr]])
 
-    prediction = model.predict_proba(input_data)[0]
+        prediction = model.predict_proba(input_data)[0]
 
-    loss_prob = prediction[0]
-    win_prob = prediction[1]
+        loss_prob = prediction[0]
+        win_prob = prediction[1]
 
-    st.success(f"🏆 {batting_team}: {round(win_prob * 100, 2)}% chance to win")
-    st.error(f"❌ {bowling_team}: {round(loss_prob * 100, 2)}% chance to win")
+        st.success(f"🏆 {batting_team}: {round(win_prob * 100, 2)}% chance to win")
+        st.error(f"❌ {bowling_team}: {round(loss_prob * 100, 2)}% chance to win")
 
-    st.progress(int(win_prob * 100))
+        st.progress(int(win_prob * 100))
