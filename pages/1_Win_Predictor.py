@@ -39,7 +39,9 @@ if st.button("Predict"):
 
     input_data = np.array([[runs_left, balls_left, wickets_left, crr, rrr]])
 
-    prediction = model.predict_proba(input_data)[0]
+    prediction = model.predict(input_data)[0]
+
+    st.success(f"{batting_team}: Predicted Score Proxy = {round(prediction,2)}")
 
     win_prob = prediction[1]
     loss_prob = prediction[0]
