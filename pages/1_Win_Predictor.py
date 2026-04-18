@@ -8,7 +8,7 @@ st.title("🏆 Win Probability Predictor")
 
 @st.cache_resource
 def load_model():
-    url = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/blob/main/model%20(1).pkl"
+    url = "https://raw.githubusercontent.com/Jyotikasingh04/IPL_Analysis_Web_app/main/model%20(1).pkl"
     response = requests.get(url)
     return joblib.load(io.BytesIO(response.content))
 
@@ -41,12 +41,4 @@ if st.button("Predict"):
 
     prediction = model.predict(input_data)[0]
 
-    st.success(f"{batting_team}: Predicted Score Proxy = {round(prediction,2)}")
-
-    win_prob = prediction[1]
-    loss_prob = prediction[0]
-
-    st.success(f"{batting_team}: {round(win_prob * 100,2)}% chance to win")
-    st.error(f"{bowling_team}: {round(loss_prob * 100,2)}% chance to win")
-
-    st.progress(int(win_prob * 100))
+    st.success(f"📊 Predicted Score: {round(prediction, 2)}")
