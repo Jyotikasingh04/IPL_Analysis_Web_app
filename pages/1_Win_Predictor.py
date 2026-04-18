@@ -28,30 +28,49 @@ score = st.number_input("Current Score", min_value=0)
 overs = st.number_input("Overs Completed", min_value=0.0, max_value=20.0)
 wickets = st.number_input("Wickets Fallen", min_value=0, max_value=10)
 
-if st.button("Predict winning probability"):
+if st.button("Predict"):
 
     runs_left = target - score
     balls_left = 120 - int(overs * 6)
     wickets_left = 10 - wickets
 
-    crr = score / overs if overs > 0 else 0
-    rrr = (runs_left / balls_left) * 6 if balls_left > 0 else 0
-
-    input_data = np.array([[runs_left, balls_left, wickets_left, crr, rrr]])
-
-    # 🔥 predicted score from model
-    predicted_score = model.predict(input_data)[0]
-
-    # 🔥 convert to win probability
-    if predicted_score >= target:
-        win_prob = 0.7 + min((predicted_score - target) / target, 0.3)
+    if balls_left <= 0:
+        st.error("Match Over")
     else:
-        win_prob = max(0.3 - (target - predicted_score) / target, 0.05)
+        # Required run rate
+        rrr = (runs_left / balls_left) * 6 if balls_left > 0 else 0
 
-    win_prob = max(min(win_prob, 0.95), 0.05)
-    loss_prob = 1 - win_prob
+        # Base probability logic
+        win_prob = 0.5
 
-    st.success(f"🏆 {batting_team}: {round(win_prob * 100,2)}% chance to win")
-    st.error(f"❌ {bowling_team}: {round(loss_prob * 100,2)}% chance to win")
+        # 🔥 Key cricket factors
+        if runs_left <= 0:
+            win_prob = 0.99
 
-    st.progress(int(win_prob * 100))
+        elif rrr > 12:
+            win_prob -= 0.3
+
+        elif rrr > 9:
+            win_prob -= 0.15
+
+        elif rrr < 6:
+            win_prob += 0.2
+
+        # wickets effect
+        if wickets_left > 6:
+            win_prob += 0.1
+        elif wickets_left < 3:
+            win_prob -= 0.2
+
+        # balls pressure
+        if balls_left < 30:
+            win_prob -= 0.1
+
+        # clamp
+        win_prob = max(min(win_prob, 0.95), 0.05)
+        loss_prob = 1 - win_prob
+
+        st.success(f"{batting_team}: {round(win_prob * 100,2)}% chance to win")
+        st.error(f" {bowling_team}: {round(loss_prob * 100,2)}% chance to win")
+
+        st.progress(int(win_prob * 100))
