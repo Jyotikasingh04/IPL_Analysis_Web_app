@@ -8,7 +8,7 @@ st.title("🏆 Win Probability Predictor")
 
 @st.cache_resource
 def load_model():
-    url = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/score_model_new.1.pkl"
+    url = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/blob/main/model%20(1).pkl"
     response = requests.get(url)
     return joblib.load(io.BytesIO(response.content))
 
