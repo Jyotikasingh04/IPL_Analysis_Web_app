@@ -28,7 +28,7 @@ score = st.number_input("Current Score", min_value=0)
 overs = st.number_input("Overs Completed", min_value=0.0, max_value=20.0)
 wickets = st.number_input("Wickets Fallen", min_value=0, max_value=10)
 
-if st.button("Predict"):
+if st.button("Predict winning probability"):
 
     runs_left = target - score
     balls_left = 120 - int(overs * 6)
