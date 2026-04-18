@@ -39,6 +39,19 @@ if st.button("Predict"):
 
     input_data = np.array([[runs_left, balls_left, wickets_left, crr, rrr]])
 
-    prediction = model.predict(input_data)[0]
+    # 🔥 predicted score from model
+    predicted_score = model.predict(input_data)[0]
 
-    st.success(f"📊 Predicted Score: {round(prediction, 2)}")
+    # 🔥 convert to win probability
+    if predicted_score >= target:
+        win_prob = 0.7 + min((predicted_score - target) / target, 0.3)
+    else:
+        win_prob = max(0.3 - (target - predicted_score) / target, 0.05)
+
+    win_prob = max(min(win_prob, 0.95), 0.05)
+    loss_prob = 1 - win_prob
+
+    st.success(f"🏆 {batting_team}: {round(win_prob * 100,2)}% chance to win")
+    st.error(f"❌ {bowling_team}: {round(loss_prob * 100,2)}% chance to win")
+
+    st.progress(int(win_prob * 100))
