@@ -25,7 +25,7 @@ runs = player_df['batsman_runs'].sum()
 balls = player_df.shape[0]
 
 # ⚠️ Better strike rate (ignore wides)
-valid_balls = player_df[player_df['wide_runs'] == 0].shape[0]
+valid_balls = player_df.shape[0]
 sr = (runs / valid_balls) * 100 if valid_balls > 0 else 0
 
 # dismissals (for average)
@@ -106,7 +106,10 @@ compare_df = df[df['batter'] == compare_player]
 compare_runs = compare_df['batsman_runs'].sum()
 compare_balls = compare_df.shape[0]
 
-compare_valid_balls = compare_df[compare_df['wide_runs'] == 0].shape[0]
+if 'wide_runs' in compare_df.columns:
+    compare_valid_balls = compare_df[compare_df['wide_runs'] == 0].shape[0]
+else:
+    compare_valid_balls = compare_df.shape[0]
 compare_sr = (compare_runs / compare_valid_balls) * 100 if compare_valid_balls > 0 else 0
 
 compare_dismissals = compare_df[compare_df['player_dismissed'] == compare_player].shape[0]
