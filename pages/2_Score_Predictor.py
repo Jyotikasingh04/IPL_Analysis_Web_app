@@ -2,16 +2,19 @@ import streamlit as st
 import joblib
 import requests
 import numpy as np
+import io
 
 st.set_page_config(layout="wide")
 
 st.title("📊 Score Predictor")
 
-# 🔥 Load model from GitHub Release
+# 🔥 Load model from GitHub Release (FIXED)
 @st.cache_resource
 def load_model():
     url = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/score_model_new.1.pkl"
-    return joblib.load(requests.get(url, stream=True).raw)
+    
+    response = requests.get(url)
+    return joblib.load(io.BytesIO(response.content))
 
 model = load_model()
 
@@ -38,7 +41,6 @@ st.markdown("---")
 
 if st.button("🚀 Predict Final Score"):
 
-    # input format must match training
     input_data = np.array([[current_score, balls_left, wickets, run_rate]])
 
     prediction = model.predict(input_data)[0]
