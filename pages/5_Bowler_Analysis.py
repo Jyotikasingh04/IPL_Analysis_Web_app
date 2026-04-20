@@ -35,7 +35,7 @@ economy = runs_conceded / overs if overs > 0 else 0
 avg = runs_conceded / wickets if wickets > 0 else 0
 
 
-col1, col2, col3, col4 = st.columns(5)
+col1, col2, col3, col4 = st.columns(4)
 
 col1.metric("Overs", round(overs, 1))
 col2.metric("Runs", runs_conceded)
