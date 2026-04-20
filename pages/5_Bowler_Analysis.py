@@ -4,18 +4,18 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
-@st.cache_data
-def load_data():
-    return pd.read_csv(
-        "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/deliveries.csv"
-    )
+# ================= DATA LOAD (AS YOU SAID - GZIP) =================
+df = pd.read_csv(
+    'https://raw.githubusercontent.com/Jyotikasingh04/IPL_Analysis_Web_app/main/deliveries.csv',
+    compression='gzip',
+    encoding='latin1'
+)
 
-df = load_data()
 
 st.title("🎯 Advanced Bowler Analysis")
 
 # ================= SELECT BOWLER =================
-bowlers = sorted(df['bowler'].unique())
+bowlers = sorted(df['bowler'].dropna().unique())
 selected_bowler = st.selectbox("Select Bowler", bowlers)
 
 bowler_df = df[df['bowler'] == selected_bowler]
@@ -24,7 +24,12 @@ bowler_df = df[df['bowler'] == selected_bowler]
 runs_conceded = bowler_df['total_runs'].sum()
 balls = bowler_df.shape[0]
 overs = balls / 6
-wickets = bowler_df[bowler_df['is_wicket'] == 1].shape[0]
+
+# ✅ FIXED wicket logic (exclude run-outs)
+wickets = bowler_df[
+    (bowler_df['is_wicket'] == 1) & 
+    (bowler_df['dismissal_kind'] != 'run out')
+].shape[0]
 
 economy = runs_conceded / overs if overs > 0 else 0
 avg = runs_conceded / wickets if wickets > 0 else 0
@@ -42,15 +47,15 @@ col5.metric("Strike Rate", round(sr, 2))
 st.subheader("📈 Match-wise Performance")
 
 match_perf = bowler_df.groupby('match_id').agg({
-    'is_wicket': 'sum',
-    'total_runs': 'sum'
-}).reset_index()
+    'total_runs': 'sum',
+    'dismissal_kind': lambda x: ((x != 'run out') & (x.notna())).sum()
+}).reset_index().rename(columns={'dismissal_kind': 'wickets'})
 
 fig = plt.figure(figsize=(10,5))
-plt.plot(match_perf['is_wicket'], label="Wickets")
-plt.plot(match_perf['total_runs'], label="Runs Conceded")
+plt.plot(match_perf['match_id'], match_perf['wickets'], label="Wickets")
+plt.plot(match_perf['match_id'], match_perf['total_runs'], label="Runs Conceded")
 plt.legend()
-plt.xlabel("Matches")
+plt.xlabel("Match ID")
 plt.title("Performance Trend")
 
 st.pyplot(fig)
@@ -75,7 +80,7 @@ st.pyplot(fig2)
 st.subheader("🔥 Best Bowling Spells")
 
 top_spells = match_perf.sort_values(
-    by=['is_wicket', 'total_runs'],
+    by=['wickets', 'total_runs'],
     ascending=[False, True]
 ).head(5)
 
@@ -98,7 +103,7 @@ elif sr < 25:
 else:
     st.warning("Needs better wicket conversion")
 
-# ================= COMPARISON (BONUS) =================
+# ================= COMPARISON =================
 st.subheader("⚔️ Compare with Another Bowler")
 
 compare_bowler = st.selectbox("Select another bowler", bowlers, key="compare")
@@ -108,7 +113,11 @@ compare_df = df[df['bowler'] == compare_bowler]
 compare_runs = compare_df['total_runs'].sum()
 compare_balls = compare_df.shape[0]
 compare_overs = compare_balls / 6
-compare_wickets = compare_df[compare_df['is_wicket'] == 1].shape[0]
+
+compare_wickets = compare_df[
+    (compare_df['is_wicket'] == 1) & 
+    (compare_df['dismissal_kind'] != 'run out')
+].shape[0]
 
 compare_economy = compare_runs / compare_overs if compare_overs > 0 else 0
 
