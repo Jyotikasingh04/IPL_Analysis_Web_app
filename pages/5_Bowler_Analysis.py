@@ -12,7 +12,7 @@ df = pd.read_csv(
 )
 
 
-st.title("🎯 Advanced Bowler Analysis")
+st.title("Bowler Analysis")
 
 # ================= SELECT BOWLER =================
 bowlers = sorted(df['bowler'].dropna().unique())
@@ -33,15 +33,15 @@ wickets = bowler_df[
 
 economy = runs_conceded / overs if overs > 0 else 0
 avg = runs_conceded / wickets if wickets > 0 else 0
-sr = balls / wickets if wickets > 0 else 0
 
-col1, col2, col3, col4, col5 = st.columns(5)
+
+col1, col2, col3, col4 = st.columns(5)
 
 col1.metric("Overs", round(overs, 1))
 col2.metric("Runs", runs_conceded)
 col3.metric("Wickets", wickets)
 col4.metric("Economy", round(economy, 2))
-col5.metric("Strike Rate", round(sr, 2))
+
 
 # ================= PERFORMANCE TREND =================
 st.subheader("📈 Match-wise Performance")
