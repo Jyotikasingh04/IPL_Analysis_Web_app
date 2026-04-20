@@ -4,68 +4,115 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
-df = pd.read_csv(
-    'https://raw.githubusercontent.com/Jyotikasingh04/IPL_Analysis_Web_app/main/deliveries.csv',
-    compression='gzip',
-    encoding='latin1'
-)
+@st.cache_data
+def load_data():
+    return pd.read_csv(
+        "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/deliveries.csv"
+    )
 
-st.title("🏏 Batsman Analysis")
+df = load_data()
 
-# dropdown
-players = sorted(df['batter'].unique())
-selected_player = st.selectbox("Select Batsman", players)
+st.title("🎯 Advanced Bowler Analysis")
 
-player_df = df[df['batter'] == selected_player]
+# ================= SELECT BOWLER =================
+bowlers = sorted(df['bowler'].unique())
+selected_bowler = st.selectbox("Select Bowler", bowlers)
 
-# metrics
-runs = player_df['batsman_runs'].sum()
-balls = player_df.shape[0]
-sr = (runs / balls) * 100 if balls > 0 else 0
+bowler_df = df[df['bowler'] == selected_bowler]
 
-fours = player_df[player_df['batsman_runs'] == 4].shape[0]
-sixes = player_df[player_df['batsman_runs'] == 6].shape[0]
+# ================= METRICS =================
+runs_conceded = bowler_df['total_runs'].sum()
+balls = bowler_df.shape[0]
+overs = balls / 6
+wickets = bowler_df[bowler_df['is_wicket'] == 1].shape[0]
 
-col1, col2, col3, col4 = st.columns(4)
+economy = runs_conceded / overs if overs > 0 else 0
+avg = runs_conceded / wickets if wickets > 0 else 0
+sr = balls / wickets if wickets > 0 else 0
 
-col1.metric("Runs", runs)
-col2.metric("Balls", balls)
-col3.metric("Strike Rate", round(sr, 2))
-col4.metric("4s / 6s", f"{fours}/{sixes}")
+col1, col2, col3, col4, col5 = st.columns(5)
 
-# 🔥 Runs per match graph
-st.subheader("📈 Performance Trend")
+col1.metric("Overs", round(overs, 1))
+col2.metric("Runs", runs_conceded)
+col3.metric("Wickets", wickets)
+col4.metric("Economy", round(economy, 2))
+col5.metric("Strike Rate", round(sr, 2))
 
-runs_per_match = player_df.groupby('match_id')['batsman_runs'].sum()
+# ================= PERFORMANCE TREND =================
+st.subheader("📈 Match-wise Performance")
+
+match_perf = bowler_df.groupby('match_id').agg({
+    'is_wicket': 'sum',
+    'total_runs': 'sum'
+}).reset_index()
 
 fig = plt.figure(figsize=(10,5))
-plt.plot(runs_per_match.values)
+plt.plot(match_perf['is_wicket'], label="Wickets")
+plt.plot(match_perf['total_runs'], label="Runs Conceded")
+plt.legend()
 plt.xlabel("Matches")
-plt.ylabel("Runs")
-plt.title("Runs per Match")
+plt.title("Performance Trend")
 
 st.pyplot(fig)
 
-# 🔥 Shot distribution
-st.subheader("🎯 Shot Distribution")
+# ================= RUN DISTRIBUTION =================
+st.subheader("🎯 Ball Outcome Distribution")
 
-singles = player_df[player_df['batsman_runs'] == 1].shape[0]
+dots = bowler_df[bowler_df['batsman_runs'] == 0].shape[0]
+singles = bowler_df[bowler_df['batsman_runs'] == 1].shape[0]
+boundaries = bowler_df[bowler_df['batsman_runs'] >= 4].shape[0]
 
 fig2 = plt.figure(figsize=(5,5))
 plt.pie(
-    [singles, fours, sixes],
-    labels=["1s", "4s", "6s"],
+    [dots, singles, boundaries],
+    labels=["Dot Balls", "Singles", "Boundaries"],
     autopct="%1.1f%%"
 )
 
 st.pyplot(fig2)
 
-# 🔥 Insight
-st.subheader("🧠 Insight")
+# ================= TOP SPELLS =================
+st.subheader("🔥 Best Bowling Spells")
 
-if sr > 140:
-    st.success("Aggressive batter 🔥")
-elif sr > 120:
-    st.info("Balanced player ⚖️")
+top_spells = match_perf.sort_values(
+    by=['is_wicket', 'total_runs'],
+    ascending=[False, True]
+).head(5)
+
+st.dataframe(top_spells)
+
+# ================= INSIGHTS =================
+st.subheader("🧠 Performance Insights")
+
+if economy < 6:
+    st.success("Elite economical bowler 💎")
+elif economy < 8:
+    st.info("Decent control ⚖️")
 else:
-    st.warning("Anchor type player 🧱")
+    st.warning("Expensive spells detected 🔥")
+
+if sr < 15:
+    st.success("High wicket-taking ability 🎯")
+elif sr < 25:
+    st.info("Moderate strike rate")
+else:
+    st.warning("Needs better wicket conversion")
+
+# ================= COMPARISON (BONUS) =================
+st.subheader("⚔️ Compare with Another Bowler")
+
+compare_bowler = st.selectbox("Select another bowler", bowlers, key="compare")
+
+compare_df = df[df['bowler'] == compare_bowler]
+
+compare_runs = compare_df['total_runs'].sum()
+compare_balls = compare_df.shape[0]
+compare_overs = compare_balls / 6
+compare_wickets = compare_df[compare_df['is_wicket'] == 1].shape[0]
+
+compare_economy = compare_runs / compare_overs if compare_overs > 0 else 0
+
+col1, col2 = st.columns(2)
+
+col1.metric(selected_bowler, f"Econ: {round(economy,2)} | Wkts: {wickets}")
+col2.metric(compare_bowler, f"Econ: {round(compare_economy,2)} | Wkts: {compare_wickets}")
