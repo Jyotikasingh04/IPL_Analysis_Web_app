@@ -11,10 +11,10 @@ df = pd.read_csv(
     encoding='latin1'
 )
 
-st.title("📊 Match Insights")
+st.title("Match Insights")
 
 # ================= AVERAGE SCORE =================
-st.subheader("🏏 Average Match Score")
+st.subheader("Average Match Score")
 
 match_scores = df.groupby(['match_id','inning'])['total_runs'].sum().reset_index()
 avg_score = match_scores['total_runs'].mean()
@@ -23,7 +23,7 @@ st.metric("Average Score (IPL)", round(avg_score, 2))
 
 
 # ================= POWERPLAY VS DEATH =================
-st.subheader("⚡ Powerplay vs Death Overs")
+st.subheader("Powerplay vs Death Overs")
 
 powerplay = df[df['over'] <= 6]['total_runs'].sum()
 death = df[df['over'] > 15]['total_runs'].sum()
@@ -40,10 +40,10 @@ st.subheader("📈 Team Scoring Trends")
 
 team_runs = df.groupby('batting_team')['total_runs'].sum().sort_values(ascending=False)
 
-fig2 = plt.figure(figsize=(12,6))   # 🔥 FIX SIZE
+fig2 = plt.figure(figsize=(12,6))   # FIX SIZE
 team_runs.plot(kind='bar')
 
-plt.xticks(rotation=45, ha='right')  # 🔥 FIX LABELS
+plt.xticks(rotation=45, ha='right')  # FIX LABELS
 plt.ylabel("Runs")
 plt.title("Total Runs by Team")
 
@@ -51,7 +51,7 @@ st.pyplot(fig2)
 
 
 # ================= CORRELATION HEATMAP =================
-st.subheader("🔥 Correlation Analysis")
+st.subheader("Correlation Analysis")
 
 corr_df = df[['total_runs','ball']].copy()
 corr_df['is_boundary'] = (df['batsman_runs'] >= 4).astype(int)
@@ -66,7 +66,7 @@ st.pyplot(fig3)
 
 
 # ================= KEY INSIGHTS =================
-st.subheader("🧠 Key Insights")
+st.subheader("Key Insights")
 
 st.markdown("""
 - Boundary hitting has strong positive impact on total runs  
