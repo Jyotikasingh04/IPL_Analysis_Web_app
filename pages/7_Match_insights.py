@@ -5,7 +5,11 @@ import seaborn as sns
 
 st.set_page_config(layout="wide")
 
-df = pd.read_csv('deliveries.csv')
+df = pd.read_csv(
+    'https://raw.githubusercontent.com/Jyotikasingh04/IPL_Analysis_Web_app/main/deliveries.csv',
+    compression='gzip',
+    encoding='latin1'
+)
 
 st.title("📊 Match Insights")
 
