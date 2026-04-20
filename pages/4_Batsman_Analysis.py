@@ -12,7 +12,7 @@ df = pd.read_csv(
 )
 
 
-st.title("🏏 Advanced Batsman Analysis")
+st.title("Batsman Analysis")
 
 # ================= SELECT PLAYER =================
 players = sorted(df['batter'].dropna().unique())
@@ -57,7 +57,7 @@ plt.title("Runs per Match")
 st.pyplot(fig)
 
 # ================= SHOT DISTRIBUTION =================
-st.subheader("🎯 Shot Distribution")
+st.subheader("Shot Distribution")
 
 dots = player_df[player_df['batsman_runs'] == 0].shape[0]
 singles = player_df[player_df['batsman_runs'] == 1].shape[0]
@@ -74,13 +74,13 @@ plt.pie(
 st.pyplot(fig2)
 
 # ================= TOP PERFORMANCES =================
-st.subheader("🔥 Top Performances")
+st.subheader("Top Performances")
 
 top_scores = runs_per_match.sort_values(ascending=False).head(5)
 st.dataframe(top_scores.reset_index().rename(columns={'batsman_runs': 'Runs'}))
 
 # ================= INSIGHTS =================
-st.subheader("🧠 Insights")
+st.subheader("Insights")
 
 if sr > 150:
     st.success("Highly aggressive batter 🔥")
@@ -97,7 +97,7 @@ else:
     st.warning("Inconsistent performances ⚠️")
 
 # ================= COMPARISON =================
-st.subheader("⚔️ Compare with Another Batsman")
+st.subheader("Compare with Another Batsman")
 
 compare_player = st.selectbox("Select another batsman", players, key="compare")
 
