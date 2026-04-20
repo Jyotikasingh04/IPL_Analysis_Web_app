@@ -4,7 +4,7 @@ import requests
 import numpy as np
 import io
 
-st.title("🏆 Win Probability Predictor")
+st.title("Win Probability Predictor")
 
 @st.cache_resource
 def load_model():
@@ -70,7 +70,7 @@ if st.button("Predict"):
         win_prob = max(min(win_prob, 0.95), 0.05)
         loss_prob = 1 - win_prob
 
-        st.success(f"🏆 {batting_team}: {round(win_prob * 100,2)}% chance to win")
-        st.error(f"❌ {bowling_team}: {round(loss_prob * 100,2)}% chance to win")
+        st.success(f" {batting_team}: {round(win_prob * 100,2)}% chance to win")
+        st.error(f"{bowling_team}: {round(loss_prob * 100,2)}% chance to win")
 
         st.progress(int(win_prob * 100))
