@@ -41,5 +41,3 @@ It helps you:
 - **Match Insights**  
   → Understand scoring patterns and key trends  
 
----
-
