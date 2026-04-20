@@ -78,18 +78,4 @@ if st.button("Predict Final Score"):
         unsafe_allow_html=True
     )
 
-# ================= INSIGHTS =================
-st.markdown("---")
-
-st.subheader("Match Insights")
-
-col1, col2 = st.columns(2)
-
-with col1:
-    st.info("Higher run rate increases scoring potential")
-    st.info("Fewer balls left reduces scoring opportunities")
-
-with col2:
-    st.info("More wickets fallen reduces momentum")
-    st.info("Powerplay and death overs impact scoring")
 
