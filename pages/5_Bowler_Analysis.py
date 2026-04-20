@@ -96,13 +96,6 @@ elif economy < 8:
 else:
     st.warning("Expensive spells detected ")
 
-if sr < 15:
-    st.success("High wicket-taking ability ")
-elif sr < 25:
-    st.info("Moderate strike rate")
-else:
-    st.warning("Needs better wicket conversion")
-
 # ================= COMPARISON =================
 st.subheader("⚔️ Compare with Another Bowler")
 
