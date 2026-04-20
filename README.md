@@ -1,57 +1,57 @@
-# 🏏 IPL Analytics Dashboard
+# IPL Analytics Dashboard
 
 An end-to-end **Data Science + Machine Learning project** that analyzes IPL match data and provides real-time predictions using an interactive web dashboard.
 
 ---
 
-## 🚀 Live Demo
+## Live Demo
 
 🔗 https://iplanalysiswebapp-rvxgqefhwr9zckamqcgqff.streamlit.app/
 
 ---
 
-## 📌 Project Overview
+## Project Overview
 
 This project leverages ball-by-ball IPL data to:
 
-* 📊 Analyze player and team performance
-* 🏆 Predict match winning probability
-* 📈 Estimate final scores in real-time
-* 🎯 Provide interactive insights via a web app
+* Analyze player and team performance
+* Predict match winning probability
+* Estimate final scores in real-time
+* Provide interactive insights via a web app
 
 ---
 
-## 🔥 Features
+## Features
 
-### 🏆 Win Probability Predictor
+### Win Probability Predictor
 
 * Predicts match outcome based on live match conditions
 * Uses features like runs left, balls left, wickets
 
-### 📊 Score Predictor
+### Score Predictor
 
 * Predicts final score in first innings
 * Based on current score, run rate, wickets, and overs
 
-### 🏏 Batsman Analysis
+### Batsman Analysis
 
 * Strike rate, runs, boundary percentage
 
-### 🎯 Bowler Analysis
+### Bowler Analysis
 
 * Wickets, economy, performance trends
 
-### 📈 Team Analysis
+### Team Analysis
 
 * Team-wise performance comparison
 
-### 📊 Match Insights
+### Match Insights
 
 * Key trends and scoring patterns
 
 ---
 
-## 🧠 Tech Stack
+## Tech Stack
 
 * **Python**
 * **Pandas, NumPy**
@@ -61,7 +61,7 @@ This project leverages ball-by-ball IPL data to:
 
 ---
 
-## ⚙️ Machine Learning
+## Machine Learning
 
 * Feature engineering using match-state variables
 * Models trained for:
@@ -72,7 +72,7 @@ This project leverages ball-by-ball IPL data to:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 IPL_Analysis_Web_app/
@@ -95,7 +95,7 @@ IPL_Analysis_Web_app/
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 * Hosted on **Streamlit Cloud**
 * Models served via **GitHub Releases**
@@ -103,7 +103,7 @@ IPL_Analysis_Web_app/
 
 ---
 
-## 🎯 Key Highlights
+## Key Highlights
 
 * End-to-end pipeline: Data → ML → Deployment
 * Interactive dashboard with real-time predictions
@@ -111,7 +111,7 @@ IPL_Analysis_Web_app/
 
 ---
 
-## 📌 Future Improvements
+## Future Improvements
 
 * Add win probability graph over match timeline
 * Player impact score modeling
@@ -119,12 +119,12 @@ IPL_Analysis_Web_app/
 
 ---
 
-## 👩‍💻 Author
+## Author
 
 **Jyotika Singh**
 
 ---
 
-## ⭐ If you like this project
+## If you like this project
 
 Give it a ⭐ on GitHub!
