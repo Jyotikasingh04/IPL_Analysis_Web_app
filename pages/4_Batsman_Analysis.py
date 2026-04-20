@@ -44,7 +44,7 @@ col4.metric("Average", round(avg, 2))
 col5.metric("4s / 6s", f"{fours}/{sixes}")
 
 # ================= PERFORMANCE TREND =================
-st.subheader("📈 Runs per Match")
+st.subheader("Runs per Match")
 
 runs_per_match = player_df.groupby('match_id')['batsman_runs'].sum()
 
@@ -83,18 +83,18 @@ st.dataframe(top_scores.reset_index().rename(columns={'batsman_runs': 'Runs'}))
 st.subheader("Insights")
 
 if sr > 150:
-    st.success("Highly aggressive batter 🔥")
+    st.success("Highly aggressive batter ")
 elif sr > 120:
-    st.info("Balanced attacking player ⚖️")
+    st.info("Balanced attacking player ")
 else:
-    st.warning("Anchor-type batter 🧱")
+    st.warning("Anchor-type batter ")
 
 if avg > 40:
-    st.success("Consistent performer 💎")
+    st.success("Consistent performer ")
 elif avg > 25:
     st.info("Moderately consistent")
 else:
-    st.warning("Inconsistent performances ⚠️")
+    st.warning("Inconsistent performances ")
 
 # ================= COMPARISON =================
 st.subheader("Compare with Another Batsman")
