@@ -10,14 +10,14 @@ df = pd.read_csv(
     encoding='latin1'
 )
 
-# 🔥 FIX TEAM NAMES
+# FIX TEAM NAMES
 df['batting_team'] = df['batting_team'].replace({
     'Delhi Daredevils': 'Delhi Capitals',
     'Kings XI Punjab': 'Punjab Kings',
     'Royal Challengers Bengaluru': 'Royal Challengers Bangalore'
 })
 
-st.title("📈 Team Analysis")
+st.title("Team Analysis")
 
 # dropdown
 teams = sorted(df['batting_team'].unique())
@@ -36,8 +36,8 @@ col1.metric("Total Runs", total_runs)
 col2.metric("Matches Played", matches)
 col3.metric("Avg Score", round(avg_score, 2))
 
-# 🔥 Runs per match graph
-st.subheader("📊 Runs Per Match")
+# Runs per match graph
+st.subheader("Runs Per Match")
 
 runs_per_match = team_df.groupby('match_id')['total_runs'].sum()
 
@@ -49,12 +49,12 @@ plt.title("Performance Trend")
 
 st.pyplot(fig)
 
-# 🔥 Insight
-st.subheader("🧠 Insight")
+# Insight
+st.subheader("Insight")
 
 if avg_score > 160:
-    st.success("High scoring team 🔥")
+    st.success("High scoring team ")
 elif avg_score > 140:
-    st.info("Balanced team ⚖️")
+    st.info("Balanced team ")
 else:
-    st.warning("Struggles in scoring ⚠️")
+    st.warning("Struggles in scoring ")
