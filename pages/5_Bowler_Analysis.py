@@ -44,7 +44,7 @@ col4.metric("Economy", round(economy, 2))
 
 
 # ================= PERFORMANCE TREND =================
-st.subheader("📈 Match-wise Performance")
+st.subheader("Match-wise Performance")
 
 match_perf = bowler_df.groupby('match_id').agg({
     'total_runs': 'sum',
@@ -61,7 +61,7 @@ plt.title("Performance Trend")
 st.pyplot(fig)
 
 # ================= RUN DISTRIBUTION =================
-st.subheader("🎯 Ball Outcome Distribution")
+st.subheader("Ball Outcome Distribution")
 
 dots = bowler_df[bowler_df['batsman_runs'] == 0].shape[0]
 singles = bowler_df[bowler_df['batsman_runs'] == 1].shape[0]
@@ -77,7 +77,7 @@ plt.pie(
 st.pyplot(fig2)
 
 # ================= TOP SPELLS =================
-st.subheader("🔥 Best Bowling Spells")
+st.subheader("Best Bowling Spells")
 
 top_spells = match_perf.sort_values(
     by=['wickets', 'total_runs'],
@@ -87,17 +87,17 @@ top_spells = match_perf.sort_values(
 st.dataframe(top_spells)
 
 # ================= INSIGHTS =================
-st.subheader("🧠 Performance Insights")
+st.subheader("Performance Insights")
 
 if economy < 6:
-    st.success("Elite economical bowler 💎")
+    st.success("Elite economical bowler ")
 elif economy < 8:
-    st.info("Decent control ⚖️")
+    st.info("Decent control ")
 else:
-    st.warning("Expensive spells detected 🔥")
+    st.warning("Expensive spells detected ")
 
 if sr < 15:
-    st.success("High wicket-taking ability 🎯")
+    st.success("High wicket-taking ability ")
 elif sr < 25:
     st.info("Moderate strike rate")
 else:
