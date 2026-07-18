@@ -14,7 +14,7 @@ st.set_page_config(page_title="Model Evaluation", layout="wide")
 LOCAL_METRICS_PATH = "model_metrics.json"
 REMOTE_METRICS_URL = (
     "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/"
-    "releases/download/v1.0/model_metrics.json"
+    "releases/download/v2.0/model_metrics.json"
 )
 REQUEST_TIMEOUT = 20
 
