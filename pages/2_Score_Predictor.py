@@ -3,18 +3,15 @@ import joblib
 import requests
 import numpy as np
 import io
-
 st.set_page_config(page_title="IPL Score Predictor", layout="wide")
-
 # ================= LOAD MODEL =================
 @st.cache_resource
 def load_model():
-    url = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/score_model_new.1.pkl"
-    response = requests.get(url)
+    url = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/score_model_new.pkl"
+    response = requests.get(url, timeout=20)
+    response.raise_for_status()
     return joblib.load(io.BytesIO(response.content))
-
 model = load_model()
-
 # ================= HEADER =================
 st.markdown(
     """
@@ -23,43 +20,29 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 st.markdown("---")
-
 # ================= INPUT SECTION =================
 st.subheader("Enter Match Details")
-
 col1, col2, col3 = st.columns(3)
-
 with col1:
     current_score = st.number_input("Current Score", min_value=0, step=1)
-
 with col2:
     overs = st.number_input("Overs Completed", min_value=0.0, max_value=20.0, step=0.1)
-
 with col3:
     wickets = st.slider("Wickets Fallen", 0, 10, 0)
-
 # ================= LIVE METRICS =================
 balls_left = 120 - int(overs * 6)
 run_rate = current_score / overs if overs > 0 else 0
-
 st.markdown("### Live Match Metrics")
-
 m1, m2, m3 = st.columns(3)
-
 m1.metric("Balls Left", balls_left)
 m2.metric("Current Run Rate", round(run_rate, 2))
 m3.metric("Wickets in Hand", 10 - wickets)
-
 st.markdown("---")
-
 # ================= PREDICTION =================
 if st.button("Predict Final Score"):
-
     input_data = np.array([[current_score, balls_left, wickets, run_rate]])
     prediction = model.predict(input_data)[0]
-
     # Highlight box
     st.markdown(
         f"""
@@ -77,5 +60,3 @@ if st.button("Predict Final Score"):
         """,
         unsafe_allow_html=True
     )
-
-
