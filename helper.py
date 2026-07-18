@@ -23,8 +23,8 @@ import streamlit as st
 # release asset (same way score_model_new.1.pkl was uploaded). Replace the
 # URL with the real release asset URL once it exists.
 
-WIN_MODEL_URL = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/model_1.pkl"
-SCORE_MODEL_URL = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/score_model_new.1.pkl"
+WIN_MODEL_URL = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/model.pkl"
+SCORE_MODEL_URL = "https://github.com/Jyotikasingh04/IPL_Analysis_Web_app/releases/download/v1.0/score_model_new.pkl"
 
 REQUEST_TIMEOUT = 20  # seconds
 
